@@ -1,11 +1,12 @@
-package com.inventory.todoproject.application.Dto.Response;
+package com.inventory.todoproject.application.dto.response;
 
 import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.entities.TaskState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,8 +16,8 @@ public class TaskResponse {
     private String title;
     private String description;
     private TaskState state;
-    private LocalDateTime creationDate;
-    private LocalDateTime dueDate;
+    private LocalDate creationDate;
+    private LocalDate dueDate;
 
     public static TaskResponse toDomain(Task task) {
         TaskResponse response = new TaskResponse();

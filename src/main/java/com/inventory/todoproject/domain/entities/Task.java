@@ -1,16 +1,17 @@
 package com.inventory.todoproject.domain.entities;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 public class Task {
     private Long id;
     private String title;
     private String description;
     private TaskState state;
-    private LocalDateTime creationDate;
-    private LocalDateTime dueDate;
+    private LocalDate creationDate;
+    private LocalDate dueDate;
 
     public Task(String title, String description, TaskState state,
-                LocalDateTime creationDate, LocalDateTime dueDate) {
+                LocalDate creationDate, LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.state = state;
@@ -53,19 +54,19 @@ public class Task {
         this.state = state;
     }
 
-    public LocalDateTime getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 }

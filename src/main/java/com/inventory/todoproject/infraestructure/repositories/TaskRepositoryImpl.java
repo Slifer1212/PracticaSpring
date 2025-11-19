@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class TaskRepository implements com.inventory.todoproject.domain.repositories.TaskRepository {
+public class TaskRepositoryImpl implements com.inventory.todoproject.domain.repositories.TaskRepository {
 
     private final TaskMapper mapper;
     private final JpaTaskRespository jpaRepository;
 
-    public TaskRepository(TaskMapper mapper, JpaTaskRespository jpaRespository) {
+    public TaskRepositoryImpl(TaskMapper mapper, JpaTaskRespository jpaRespository) {
         this.mapper = mapper;
         this.jpaRepository = jpaRespository;
     }

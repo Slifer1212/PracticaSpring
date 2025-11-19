@@ -1,11 +1,14 @@
-package com.inventory.todoproject.application.Dto.Request;
+package com.inventory.todoproject.application.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,5 +24,5 @@ public class CreateTaskRequest {
     private String description;
 
     @NotNull(message = "Due date is required")
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 }

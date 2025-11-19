@@ -1,26 +1,23 @@
-package com.inventory.todoproject.application.Service;
+package com.inventory.todoproject.application.service;
 
-import com.inventory.todoproject.application.Dto.Request.CreateTaskRequest;
-import com.inventory.todoproject.application.Dto.Request.UpdateTaskRequest;
-import com.inventory.todoproject.application.Dto.Response.TaskResponse;
+import com.inventory.todoproject.application.dto.request.CreateTaskRequest;
+import com.inventory.todoproject.application.dto.request.UpdateTaskRequest;
+import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.entities.TaskState;
 import com.inventory.todoproject.domain.exception.TaskNotFoundException;
 import com.inventory.todoproject.domain.repositories.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
 
-    @Autowired
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
@@ -30,8 +27,8 @@ public class TaskService {
         Task task = new Task();
         task.setTitle(taskRequest.getTitle());
         task.setDescription(taskRequest.getDescription());
-        task.setState(TaskState.Pending);
-        task.setCreationDate(LocalDateTime.now());
+        task.setState(TaskState.PENDING);
+        task.setCreationDate(LocalDate.now());
         task.setDueDate(taskRequest.getDueDate());
 
         Task savedTask = taskRepository.save(task);
@@ -44,9 +41,10 @@ public class TaskService {
                 (TaskResponse::toDomain).collect(Collectors.toList());
     }
 
-    public Optional<TaskResponse>findOne(Long id){
-        return Optional.ofNullable(taskRepository.findById(id).map(TaskResponse::toDomain).orElseThrow
-                (() -> new TaskNotFoundException(id)));
+    public TaskResponse findOne(Long id){
+        return taskRepository.findById(id)
+                .map(TaskResponse::toDomain)
+                .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     @Transactional

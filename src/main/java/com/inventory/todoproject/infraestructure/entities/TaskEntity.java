@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -29,9 +29,9 @@ public class TaskEntity {
     private TaskState state;
 
     @Column(nullable = false)
-    private LocalDateTime creationDate;
+    private LocalDate creationDate;
 
     @Column(name = "due_date")
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
 }

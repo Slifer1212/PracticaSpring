@@ -1,4 +1,4 @@
-package com.inventory.todoproject.application.Dto.Request;
+package com.inventory.todoproject.application.dto.request;
 
 import com.inventory.todoproject.domain.entities.TaskState;
 import jakarta.validation.constraints.Size;
@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Data
 @NoArgsConstructor
@@ -21,5 +22,5 @@ public class UpdateTaskRequest {
 
     private TaskState state;
 
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 }
