@@ -1,17 +1,15 @@
 package com.inventory.todoproject.infraestructure.entities;
 
-import com.inventory.todoproject.domain.entities.TaskState;
+import com.inventory.todoproject.domain.enums.TaskState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskEntity {
@@ -33,5 +31,9 @@ public class TaskEntity {
 
     @Column(name = "due_date")
     private LocalDate dueDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
 }

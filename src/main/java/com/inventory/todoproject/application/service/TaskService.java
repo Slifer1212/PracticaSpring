@@ -4,7 +4,7 @@ import com.inventory.todoproject.application.dto.request.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.domain.entities.Task;
-import com.inventory.todoproject.domain.entities.TaskState;
+import com.inventory.todoproject.domain.enums.TaskState;
 import com.inventory.todoproject.domain.exception.TaskNotFoundException;
 import com.inventory.todoproject.domain.repositories.TaskRepository;
 import org.springframework.stereotype.Service;

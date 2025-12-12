@@ -1,4 +1,4 @@
-package com.inventory.todoproject.domain.entities;
+package com.inventory.todoproject.domain.enums;
 
 public enum TaskState {
     PENDING,

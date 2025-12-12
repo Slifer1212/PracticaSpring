@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/TodoProject?createDatabaseIfNotExist=true
+    username: root
+    password: slifer@Klk2020
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        hibernate.format_sql: true
+        hibernate.use_sql_comments: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

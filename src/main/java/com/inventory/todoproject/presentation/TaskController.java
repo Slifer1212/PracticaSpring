@@ -4,7 +4,7 @@ import com.inventory.todoproject.application.dto.request.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.application.service.TaskService;
-import com.inventory.todoproject.domain.entities.TaskState;
+import com.inventory.todoproject.domain.enums.TaskState;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

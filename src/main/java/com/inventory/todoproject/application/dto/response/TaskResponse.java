@@ -1,7 +1,7 @@
 package com.inventory.todoproject.application.dto.response;
 
 import com.inventory.todoproject.domain.entities.Task;
-import com.inventory.todoproject.domain.entities.TaskState;
+import com.inventory.todoproject.domain.enums.TaskState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,5 +1,7 @@
 package com.inventory.todoproject.domain.entities;
 
+import com.inventory.todoproject.domain.enums.TaskState;
+
 import java.time.LocalDate;
 
 public class Task {
@@ -9,19 +11,31 @@ public class Task {
     private TaskState state;
     private LocalDate creationDate;
     private LocalDate dueDate;
+    private User user;
+
 
     public Task(String title, String description, TaskState state,
-                LocalDate creationDate, LocalDate dueDate) {
+                LocalDate creationDate, LocalDate dueDate, User user) {
         this.title = title;
         this.description = description;
         this.state = state;
         this.creationDate = creationDate;
         this.dueDate = dueDate;
+        this.user = user;
     }
 
     public Task(){}
 
     // Getters y Setters
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

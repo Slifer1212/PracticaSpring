@@ -1,7 +1,7 @@
 package com.inventory.todoproject.infraestructure.repositories;
 
 import com.inventory.todoproject.domain.entities.Task;
-import com.inventory.todoproject.domain.entities.TaskState;
+import com.inventory.todoproject.domain.enums.TaskState;
 import com.inventory.todoproject.infraestructure.entities.TaskEntity;
 import com.inventory.todoproject.infraestructure.jparepository.JpaTaskRespository;
 import com.inventory.todoproject.infraestructure.mapper.TaskMapper;

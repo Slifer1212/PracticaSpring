@@ -1,7 +1,7 @@
 package com.inventory.todoproject.domain.repositories;
 
 import com.inventory.todoproject.domain.entities.Task;
-import com.inventory.todoproject.domain.entities.TaskState;
+import com.inventory.todoproject.domain.enums.TaskState;
 
 import java.util.List;
 import java.util.Optional;

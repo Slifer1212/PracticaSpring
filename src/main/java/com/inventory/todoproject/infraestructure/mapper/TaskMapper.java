@@ -24,14 +24,14 @@ public class TaskMapper {
     public Task toDomain(TaskEntity entity){
         if(entity == null) return null;
 
-        Task task = new Task(
-                entity.getTitle(),
-                entity.getDescription(),
-                entity.getState(),
-                entity.getCreationDate(),
-                entity.getDueDate()
-        );
+        Task task = new Task();
+        task.setTitle(entity.getTitle());
+        task.setDescription(entity.getDescription());
+        task.setState(entity.getState());
+        task.setCreationDate(entity.getCreationDate());
+        task.setDueDate(entity.getDueDate());
         task.setId(entity.getId());
+
         return task;
     }
 }
