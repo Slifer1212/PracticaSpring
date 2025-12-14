@@ -1,4 +1,4 @@
-package com.inventory.todoproject.application.dto.request;
+package com.inventory.todoproject.application.dto.request.task;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;

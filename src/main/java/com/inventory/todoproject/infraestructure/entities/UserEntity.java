@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,7 +21,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false , length = 100, unique = true)
+    @Column(nullable = false , unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -36,7 +37,7 @@ public class UserEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Roles role;
+    private Set<Roles> role;
 
     @Column(nullable = false)
     private boolean enabled;

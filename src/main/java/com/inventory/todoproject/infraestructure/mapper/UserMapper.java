@@ -1,8 +1,12 @@
 package com.inventory.todoproject.infraestructure.mapper;
 
 import com.inventory.todoproject.domain.entities.User;
+import com.inventory.todoproject.domain.enums.Roles;
 import com.inventory.todoproject.infraestructure.entities.UserEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class UserMapper {
@@ -16,8 +20,9 @@ public class UserMapper {
         userEntity.setUsername(user.getUsername());
         userEntity.setName(user.getName());
         userEntity.setEmail(user.getEmail());
+        Set<Roles> roles = new HashSet<>();
+        userEntity.setRole(roles);
         userEntity.setLastName(user.getLastName());
-        userEntity.setRole(user.getRole());
         userEntity.setPassword(user.getPassword());
         userEntity.setCreatedAt(user.getCreatedAt());
         userEntity.setEnabled(user.isEnabled());
@@ -34,7 +39,8 @@ public class UserMapper {
         user.setName(entity.getName());
         user.setEmail(entity.getEmail());
         user.setLastName(entity.getLastName());
-        user.setRole(entity.getRole());
+        Set<Roles> roles = new HashSet<>();
+        user.setRole(roles);
         user.setPassword(entity.getPassword());
         user.setCreatedAt(entity.getCreatedAt());
         user.setEnabled(entity.isEnabled());

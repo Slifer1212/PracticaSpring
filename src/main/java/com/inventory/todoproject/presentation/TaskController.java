@@ -1,7 +1,7 @@
 package com.inventory.todoproject.presentation;
 
-import com.inventory.todoproject.application.dto.request.CreateTaskRequest;
-import com.inventory.todoproject.application.dto.request.UpdateTaskRequest;
+import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
+import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.application.service.TaskService;
 import com.inventory.todoproject.domain.enums.TaskState;
@@ -40,7 +40,7 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{id}")
-    public TaskResponse update (@PathVariable Long id, @RequestBody UpdateTaskRequest updateTaskRequest){
+    public TaskResponse update (@PathVariable Long id, @Valid @RequestBody UpdateTaskRequest updateTaskRequest){
         return taskService.update(id, updateTaskRequest);
     }
 

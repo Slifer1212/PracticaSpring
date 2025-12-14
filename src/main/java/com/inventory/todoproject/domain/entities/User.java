@@ -4,6 +4,7 @@ import com.inventory.todoproject.domain.enums.Roles;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class User {
 
@@ -13,7 +14,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private Roles role;
+    private Set<Roles> role;
     private boolean enabled;
     private LocalDateTime createdAt;
 
@@ -23,7 +24,7 @@ public class User {
 
     // Constructor completo
     public User(String username, String name, String lastName,
-                String email, String password, Roles role, List<Task> tasks) {
+                String email, String password, Set<Roles> role, List<Task> tasks) {
         this.username = username;
         this.name = name;
         this.lastName = lastName;
@@ -84,11 +85,11 @@ public class User {
         this.password = password;
     }
 
-    public Roles getRole() {
+    public Set<Roles> getRole() {
         return role;
     }
 
-    public void setRole(Roles role) {
+    public void setRole(Set<Roles> role) {
         this.role = role;
     }
 

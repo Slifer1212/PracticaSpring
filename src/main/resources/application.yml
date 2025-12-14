@@ -21,3 +21,8 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+jwt:
+  secret: bXktdmVyeS1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW5z
+  expiration: 86400000
+

@@ -1,7 +1,7 @@
 package com.inventory.todoproject.application.service;
 
-import com.inventory.todoproject.application.dto.request.CreateTaskRequest;
-import com.inventory.todoproject.application.dto.request.UpdateTaskRequest;
+import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
+import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.enums.TaskState;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,17 +24,22 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskResponse create(CreateTaskRequest taskRequest){
+    public TaskResponse create(CreateTaskRequest taskRequest) {
+        Objects.requireNonNull(taskRequest, "taskRequest must not be null");
+
+        Task task = toEntity(taskRequest);
+        Task savedTask = taskRepository.save(task);
+        return TaskResponse.toDomain(savedTask);
+    }
+
+    private Task toEntity(CreateTaskRequest request) {
         Task task = new Task();
-        task.setTitle(taskRequest.getTitle());
-        task.setDescription(taskRequest.getDescription());
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
         task.setState(TaskState.PENDING);
         task.setCreationDate(LocalDate.now());
-        task.setDueDate(taskRequest.getDueDate());
-
-        Task savedTask = taskRepository.save(task);
-
-        return TaskResponse.toDomain(savedTask);
+        task.setDueDate(request.getDueDate());
+        return task;
     }
 
     public List<TaskResponse> findAll(){

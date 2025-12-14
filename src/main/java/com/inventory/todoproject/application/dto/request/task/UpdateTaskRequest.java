@@ -1,4 +1,4 @@
-package com.inventory.todoproject.application.dto.request;
+package com.inventory.todoproject.application.dto.request.task;
 
 import com.inventory.todoproject.domain.enums.TaskState;
 import jakarta.validation.constraints.Size;
