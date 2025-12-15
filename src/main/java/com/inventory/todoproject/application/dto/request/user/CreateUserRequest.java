@@ -1,14 +1,11 @@
 package com.inventory.todoproject.application.dto.request.user;
 
 import com.inventory.todoproject.domain.enums.Roles;
-import com.inventory.todoproject.infraestructure.entities.TaskEntity;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -39,10 +36,7 @@ public class CreateUserRequest {
     private String password;
 
     @NotEmpty(message = "role must contain at least one role")
-    private List<@NotNull Roles> role;
+    private Set<@NotNull Roles> role;
 
-    @NotNull(message = "tasks must not be null")
-    @Valid
-    private Set<TaskEntity> tasks;
 
 }

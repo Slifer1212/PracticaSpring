@@ -37,6 +37,8 @@ public class UserEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles" , joinColumns = @JoinColumn(name = "user_id"))
     private Set<Roles> role;
 
     @Column(nullable = false)

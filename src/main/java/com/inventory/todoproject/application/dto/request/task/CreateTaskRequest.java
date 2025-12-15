@@ -1,9 +1,6 @@
 package com.inventory.todoproject.application.dto.request.task;
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +24,8 @@ public class CreateTaskRequest {
     @NotNull(message = "Due date is required")
     @FutureOrPresent(message = "Due date must be in the future")
     private LocalDate dueDate;
+
+    @NotNull(message = "User id is required")
+    @Positive(message = "User id must be a positive number")
+    private Long userId;
 }

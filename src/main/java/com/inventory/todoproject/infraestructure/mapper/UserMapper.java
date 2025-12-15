@@ -1,50 +1,46 @@
 package com.inventory.todoproject.infraestructure.mapper;
 
 import com.inventory.todoproject.domain.entities.User;
-import com.inventory.todoproject.domain.enums.Roles;
 import com.inventory.todoproject.infraestructure.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.Set;
 
 @Component
 public class UserMapper {
 
-    public UserEntity toEntity(User user){
+
+    public UserEntity toEntity(User user) {
         if (user == null) return null;
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity entity = new UserEntity();
+        entity.setId(user.getId());
+        entity.setUsername(user.getUsername());
+        entity.setName(user.getName());
+        entity.setLastName(user.getLastName());
+        entity.setEmail(user.getEmail());
+        entity.setRole(new HashSet<>(user.getRole()));
+        entity.setEnabled(user.isEnabled());
+        entity.setCreatedAt(user.getCreatedAt());
 
-        userEntity.setId(user.getId());
-        userEntity.setUsername(user.getUsername());
-        userEntity.setName(user.getName());
-        userEntity.setEmail(user.getEmail());
-        Set<Roles> roles = new HashSet<>();
-        userEntity.setRole(roles);
-        userEntity.setLastName(user.getLastName());
-        userEntity.setPassword(user.getPassword());
-        userEntity.setCreatedAt(user.getCreatedAt());
-        userEntity.setEnabled(user.isEnabled());
-        return userEntity;
+        entity.setPassword(user.getPassword());
+
+        return entity;
     }
 
     public User toDomain(UserEntity entity) {
         if (entity == null) return null;
 
         User user = new User();
-
         user.setId(entity.getId());
         user.setUsername(entity.getUsername());
         user.setName(entity.getName());
-        user.setEmail(entity.getEmail());
         user.setLastName(entity.getLastName());
-        Set<Roles> roles = new HashSet<>();
-        user.setRole(roles);
-        user.setPassword(entity.getPassword());
-        user.setCreatedAt(entity.getCreatedAt());
+        user.setEmail(entity.getEmail());
+        user.setRole(new HashSet<>(entity.getRole()));
         user.setEnabled(entity.isEnabled());
-        return user;
+        user.setCreatedAt(entity.getCreatedAt());
 
+        return user;
     }
 }

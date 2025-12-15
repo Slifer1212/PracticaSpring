@@ -12,22 +12,25 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class TaskResponse {
+
     private Long id;
     private String title;
     private String description;
     private TaskState state;
-    private LocalDate creationDate;
     private LocalDate dueDate;
+    private UserResponse user;
 
     public static TaskResponse toDomain(Task task) {
+        if (task == null) return null;
+
         TaskResponse response = new TaskResponse();
         response.setId(task.getId());
         response.setTitle(task.getTitle());
         response.setDescription(task.getDescription());
         response.setState(task.getState());
-        response.setCreationDate(task.getCreationDate());
         response.setDueDate(task.getDueDate());
+        response.setUser(UserResponse.fromDomain(task.getUser()));
+
         return response;
     }
-
 }

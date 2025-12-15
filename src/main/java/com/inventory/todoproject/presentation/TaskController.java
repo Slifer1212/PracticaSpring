@@ -6,6 +6,7 @@ import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.application.service.TaskService;
 import com.inventory.todoproject.domain.enums.TaskState;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class TaskController {
     private final TaskService taskService;
 
+    @Autowired
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }

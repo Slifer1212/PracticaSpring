@@ -7,6 +7,7 @@ import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.enums.TaskState;
 import com.inventory.todoproject.domain.exception.TaskNotFoundException;
 import com.inventory.todoproject.domain.repositories.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class TaskService {
     private final TaskRepository taskRepository;
 
+    @Autowired
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
