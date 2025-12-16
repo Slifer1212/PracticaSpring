@@ -3,8 +3,7 @@ package com.inventory.todoproject.application.service;
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.domain.entities.User;
-import com.inventory.todoproject.infraestructure.repositories.UserRepositoryImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.inventory.todoproject.domain.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +15,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private final UserRepositoryImpl userRepository;
 
+    private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepositoryImpl userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

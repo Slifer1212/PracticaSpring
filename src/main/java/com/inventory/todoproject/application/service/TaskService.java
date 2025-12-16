@@ -4,9 +4,12 @@ import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.domain.entities.Task;
+import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.enums.TaskState;
 import com.inventory.todoproject.domain.exception.TaskNotFoundException;
+import com.inventory.todoproject.domain.exception.UserNotFoundException;
 import com.inventory.todoproject.domain.repositories.TaskRepository;
+import com.inventory.todoproject.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,28 +22,35 @@ import java.util.stream.Collectors;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
     public TaskResponse create(CreateTaskRequest taskRequest) {
         Objects.requireNonNull(taskRequest, "taskRequest must not be null");
 
-        Task task = toEntity(taskRequest);
+        Long userId = taskRequest.getUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException( userId));
+
+        Task task = buildTask(taskRequest, user);
         Task savedTask = taskRepository.save(task);
         return TaskResponse.toDomain(savedTask);
     }
 
-    private Task toEntity(CreateTaskRequest request) {
+    private Task buildTask(CreateTaskRequest request, User user) {
         Task task = new Task();
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setState(TaskState.PENDING);
         task.setCreationDate(LocalDate.now());
         task.setDueDate(request.getDueDate());
+        task.setUser(user);
         return task;
     }
 
@@ -59,6 +69,13 @@ public class TaskService {
     public TaskResponse update(Long id, UpdateTaskRequest taskRequest) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
+
+        if (taskRequest.getUserId() != null) {
+            Long userId = taskRequest.getUserId();
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new UserNotFoundException(userId));
+            task.setUser(user);
+        }
 
         if (taskRequest.getTitle() != null) {
             task.setTitle(taskRequest.getTitle());

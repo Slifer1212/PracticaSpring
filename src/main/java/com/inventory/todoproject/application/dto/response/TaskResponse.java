@@ -29,6 +29,7 @@ public class TaskResponse {
         response.setDescription(task.getDescription());
         response.setState(task.getState());
         response.setDueDate(task.getDueDate());
+
         response.setUser(UserResponse.fromDomain(task.getUser()));
 
         return response;
