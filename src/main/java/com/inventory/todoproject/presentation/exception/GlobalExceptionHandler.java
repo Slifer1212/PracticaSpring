@@ -1,7 +1,6 @@
 package com.inventory.todoproject.presentation.exception;
 
-import com.inventory.todoproject.domain.exception.TaskNotFoundException;
-import com.inventory.todoproject.domain.exception.UserNotFoundException;
+import com.inventory.todoproject.domain.exception.DomainNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,23 +23,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(TaskNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTaskNotFound(
-            TaskNotFoundException ex) {
+    @ExceptionHandler(DomainNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleDomainNotFound(
+            DomainNotFoundException ex) {
 
         Map<String, String> error = new HashMap<>();
         error.put("message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException ex) {
-        Map<String, String> error = new HashMap<>();
-
-        error.put("message" , ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
 }

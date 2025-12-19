@@ -1,17 +1,13 @@
 package com.inventory.todoproject.application.dto.response;
 
 import com.inventory.todoproject.domain.entities.User;
-import com.inventory.todoproject.domain.enums.Roles;
-
-import java.util.Set;
 
 public record UserResponse(
         Long id,
         String username,
         String name,
         String lastName,
-        String email,
-        Set<Roles> roles
+        String email
 
 ) {
     public static UserResponse fromDomain(User user) {
@@ -22,8 +18,7 @@ public record UserResponse(
                 user.getUsername(),
                 user.getName(),
                 user.getLastName(),
-                user.getEmail(),
-                user.getRole()
+                user.getEmail()
         );
     }
 }
