@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
 
@@ -19,18 +19,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("user")
+    @PostMapping()
     public UserResponse create(@Valid @RequestBody CreateUserRequest request){
         return userService.create(request);
     }
 
-    @GetMapping("user")
+    @GetMapping()
     public List<UserResponse> getAll(){
         return userService.findAll();
     }
 
-    @GetMapping("user/{username}")
+    @GetMapping("/username/{username}")
     public UserResponse getByNameAndLastName(@PathVariable String username){
         return userService.findByUserName(username);
+    }
+
+    @GetMapping("/email/{email}")
+    public UserResponse getByEmail(@PathVariable String email){
+        return userService.findByEmail(email);
     }
 }

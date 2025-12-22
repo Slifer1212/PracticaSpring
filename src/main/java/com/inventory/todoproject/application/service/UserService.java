@@ -44,6 +44,11 @@ public class UserService {
                         userName)));
     }
 
+    public UserResponse findByEmail(String email){
+        return userRepository.findByEmail(email).map(UserResponse::fromDomain)
+                .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("User email" , email)));
+    }
+
     private User toEntity( CreateUserRequest request){
         User user = new User();
         user.setUsername(request.getUsername());

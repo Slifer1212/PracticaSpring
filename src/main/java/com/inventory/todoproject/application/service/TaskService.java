@@ -35,7 +35,7 @@ public class TaskService {
     public TaskResponse create(CreateTaskRequest taskRequest) {
         Objects.requireNonNull(taskRequest, "taskRequest must not be null");
 
-        Long userId = taskRequest.getUserId();
+        Long userId = taskRequest.userId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", userId)));
 
@@ -46,11 +46,11 @@ public class TaskService {
 
     private Task buildTask(CreateTaskRequest request, User user) {
         Task task = new Task();
-        task.setTitle(request.getTitle());
-        task.setDescription(request.getDescription());
+        task.setTitle(request.title());
+        task.setDescription(request.description());
         task.setState(TaskState.PENDING);
         task.setCreationDate(LocalDate.now());
-        task.setDueDate(request.getDueDate());
+        task.setDueDate(request.dueDate());
         task.setUser(user);
         return task;
     }
