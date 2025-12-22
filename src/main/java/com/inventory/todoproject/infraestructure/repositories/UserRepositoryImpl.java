@@ -54,7 +54,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByNameAndLastName(String name, String lastName) {
-        return jpaUserRepository.findByNameAndLastName(name, lastName).map(mapper::toDomain);
+    public Optional<User> findByUserName(String userName) {
+        return jpaUserRepository.findByUsername(userName).map(mapper::toDomain);
     }
 }

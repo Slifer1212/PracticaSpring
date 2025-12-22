@@ -28,4 +28,9 @@ public class UserController {
     public List<UserResponse> getAll(){
         return userService.findAll();
     }
+
+    @GetMapping("user/{username}")
+    public UserResponse getByNameAndLastName(@PathVariable String username){
+        return userService.findByUserName(username);
+    }
 }

@@ -6,6 +6,7 @@ import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.enums.TaskState;
+import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.TaskNotFoundException;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
 import com.inventory.todoproject.domain.repositories.TaskRepository;
@@ -36,7 +37,7 @@ public class TaskService {
 
         Long userId = taskRequest.getUserId();
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException( userId));
+                .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", userId)));
 
         Task task = buildTask(taskRequest, user);
         Task savedTask = taskRepository.save(task);
@@ -73,7 +74,7 @@ public class TaskService {
         if (taskRequest.getUserId() != null) {
             Long userId = taskRequest.getUserId();
             User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new UserNotFoundException(userId));
+                    .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", id)));
             task.setUser(user);
         }
 

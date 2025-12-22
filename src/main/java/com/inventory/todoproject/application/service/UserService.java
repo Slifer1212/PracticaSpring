@@ -3,6 +3,8 @@ package com.inventory.todoproject.application.service;
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.domain.entities.User;
+import com.inventory.todoproject.domain.exception.SearchCriteria;
+import com.inventory.todoproject.domain.exception.UserNotFoundException;
 import com.inventory.todoproject.domain.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,12 @@ public class UserService {
     public List<UserResponse> findAll(){
         return userRepository.findAll().stream().map
                 (UserResponse::fromDomain).collect(Collectors.toList());
+    }
+
+    public UserResponse findByUserName(String userName){
+        return userRepository.findByUserName(userName).map(UserResponse::fromDomain)
+                .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("Username" ,
+                        userName)));
     }
 
     private User toEntity( CreateUserRequest request){
