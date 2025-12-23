@@ -71,24 +71,24 @@ public class TaskService {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
 
-        if (taskRequest.getUserId() != null) {
-            Long userId = taskRequest.getUserId();
+        if (taskRequest.userId() != null) {
+            Long userId = taskRequest.userId();
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", id)));
             task.setUser(user);
         }
 
-        if (taskRequest.getTitle() != null) {
-            task.setTitle(taskRequest.getTitle());
+        if (taskRequest.title() != null) {
+            task.setTitle(taskRequest.title());
         }
-        if (taskRequest.getDescription() != null) {
-            task.setDescription(taskRequest.getDescription());
+        if (taskRequest.description() != null) {
+            task.setDescription(taskRequest.description());
         }
-        if (taskRequest.getState() != null) {
-            task.setState(taskRequest.getState());
+        if (taskRequest.state() != null) {
+            task.setState(taskRequest.state());
         }
-        if (taskRequest.getDueDate() != null) {
-            task.setDueDate(taskRequest.getDueDate());
+        if (taskRequest.dueDate() != null) {
+            task.setDueDate(taskRequest.dueDate());
         }
 
         Task updatedTask = taskRepository.save(task);

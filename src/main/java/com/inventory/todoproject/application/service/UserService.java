@@ -51,12 +51,12 @@ public class UserService {
 
     private User toEntity( CreateUserRequest request){
         User user = new User();
-        user.setUsername(request.getUsername());
-        user.setName(request.getName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setPassword(BCrypt.hashpw(request.getPassword() ,  BCrypt.gensalt()));
-        user.setRole(request.getRole());
+        user.setUsername(request.username());
+        user.setName(request.name());
+        user.setLastName(request.lastName());
+        user.setEmail(request.email());
+        user.setPassword(BCrypt.hashpw(request.password() ,  BCrypt.gensalt()));
+        user.setRole(request.role());
         user.setCreatedAt(LocalDateTime.now());
         user.setEnabled(true);
 
