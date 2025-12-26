@@ -95,6 +95,7 @@ public class TaskService {
         return TaskResponse.toDomain(updatedTask);
     }
 
+    @Transactional
     public void delete(Long id){
         taskRepository.delete(id);
     }

@@ -49,6 +49,11 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("User email" , email)));
     }
 
+    @Transactional
+    public void delete (Long id){
+        userRepository.delete(id);
+    }
+
     private User toEntity( CreateUserRequest request){
         User user = new User();
         user.setUsername(request.username());
