@@ -41,6 +41,7 @@ public class UserMapper {
         user.setEnabled(entity.isEnabled());
         user.setCreatedAt(entity.getCreatedAt());
 
+        user.setPassword(entity.getPassword());
         return user;
     }
 }

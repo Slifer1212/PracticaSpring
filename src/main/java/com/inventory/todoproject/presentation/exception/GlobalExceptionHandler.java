@@ -1,6 +1,7 @@
 package com.inventory.todoproject.presentation.exception;
 
 import com.inventory.todoproject.domain.exception.DomainNotFoundException;
+import com.inventory.todoproject.domain.exception.EmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,5 +32,15 @@ public class GlobalExceptionHandler {
         error.put("message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<Map<String,String>> handleAlreadyExistEmail(
+            EmailAlreadyExistsException existsException)
+    {
+        Map <String, String> errors = new HashMap<>();
+        errors.put("message" , existsException.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
     }
 }

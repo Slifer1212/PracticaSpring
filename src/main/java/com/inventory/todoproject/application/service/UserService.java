@@ -1,8 +1,10 @@
 package com.inventory.todoproject.application.service;
 
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
+import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.domain.entities.User;
+import com.inventory.todoproject.domain.exception.EmailAlreadyExistsException;
 import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
 import com.inventory.todoproject.domain.repositories.UserRepository;
@@ -33,6 +35,26 @@ public class UserService {
         return UserResponse.fromDomain(savedTask);
     }
 
+    @Transactional
+    public UserResponse update(Long id, UpdateUserRequest userRequest){
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
+                new SearchCriteria("Id", id )));
+
+        if(userRequest.email() != null && !user.getEmail().equalsIgnoreCase(userRequest.email())){
+
+            userRepository.findByEmail(userRequest.email()).ifPresent(existingUser ->
+            {
+                if(!existingUser.getId().equals(id)){
+                    throw new EmailAlreadyExistsException(userRequest.email());
+                }
+            });
+
+            user.setEmail(userRequest.email());
+        }
+
+        User userUpdated = userRepository.save(user);
+        return UserResponse.fromDomain(userUpdated);
+    }
     public List<UserResponse> findAll(){
         return userRepository.findAll().stream().map
                 (UserResponse::fromDomain).collect(Collectors.toList());

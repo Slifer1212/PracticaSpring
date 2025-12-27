@@ -1,6 +1,7 @@
 package com.inventory.todoproject.presentation;
 
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
+import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.application.service.UserService;
 import jakarta.validation.Valid;
@@ -37,5 +38,15 @@ public class UserController {
     @GetMapping("/email/{email}")
     public UserResponse getByEmail(@PathVariable String email){
         return userService.findByEmail(email);
+    }
+
+    @PutMapping("/{id}")
+    public UserResponse update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest userRequest){
+        return userService.update(id, userRequest);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+        userService.delete(id);
     }
 }

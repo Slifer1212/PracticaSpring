@@ -1,9 +1,10 @@
  package com.inventory.todoproject.application.dto.request.user;
 
- import com.inventory.todoproject.domain.enums.Roles;
- import jakarta.validation.constraints.*;
+ import jakarta.validation.constraints.Email;
+ import jakarta.validation.constraints.NotBlank;
+ import jakarta.validation.constraints.NotNull;
+ import jakarta.validation.constraints.Size;
 
- import java.util.Set;
 
 public record UpdateUserRequest(
         @NotNull
@@ -24,14 +25,5 @@ public record UpdateUserRequest(
         @NotBlank
         @Email
         @Size(max = 254)
-        String email,
-
-        @Size(min = 8, max = 100)
-        String password,
-
-        @NotNull
-        @NotEmpty
-        Set<Roles> role,
-
-        boolean enabled
+        String email
 ) {}
