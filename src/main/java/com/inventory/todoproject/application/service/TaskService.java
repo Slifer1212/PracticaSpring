@@ -40,8 +40,8 @@ public class TaskService {
                 .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", userId)));
 
         Task task = buildTask(taskRequest, user);
-        Task savedTask = taskRepository.save(task);
-        return TaskResponse.toDomain(savedTask);
+        taskRepository.save(task);
+        return TaskResponse.toDomain(task);
     }
 
     private Task buildTask(CreateTaskRequest request, User user) {
@@ -91,8 +91,8 @@ public class TaskService {
             task.setDueDate(taskRequest.dueDate());
         }
 
-        Task updatedTask = taskRepository.save(task);
-        return TaskResponse.toDomain(updatedTask);
+        taskRepository.save(task);
+        return TaskResponse.toDomain(task);
     }
 
     @Transactional

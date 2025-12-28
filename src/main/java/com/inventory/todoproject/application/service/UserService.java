@@ -29,10 +29,9 @@ public class UserService {
     @Transactional
     public UserResponse create (CreateUserRequest userRequest){
         Objects.requireNonNull(userRequest, "userRequest must not be null");
-
         User user = toEntity(userRequest);
-        User savedTask = userRepository.save(user);
-        return UserResponse.fromDomain(savedTask);
+        userRepository.save(user);
+        return UserResponse.fromDomain(user);
     }
 
     @Transactional
@@ -52,8 +51,7 @@ public class UserService {
             user.setEmail(userRequest.email());
         }
 
-        User userUpdated = userRepository.save(user);
-        return UserResponse.fromDomain(userUpdated);
+        return UserResponse.fromDomain(user);
     }
     public List<UserResponse> findAll(){
         return userRepository.findAll().stream().map
