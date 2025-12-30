@@ -1,9 +1,7 @@
 package com.inventory.todoproject.application.dto.request.task;
 
 import com.inventory.todoproject.domain.enums.TaskState;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
@@ -14,12 +12,16 @@ public record UpdateTaskRequest (
      Long userId,
 
     @Size(max = 200, message = "Title must not exceed 200 characters")
-     String title,
+    @NotBlank(message = "Titles is required")
+    String title,
 
     @Size(max = 1000, message = "Description must not exceed 1000 characters")
-     String description,
+    @NotBlank(message = "Description is required")
+    String description,
 
-     TaskState state,
+    TaskState state,
 
+    @NotNull(message = "The due date is required")
+    @FutureOrPresent(message = "Due date must be in the future")
     LocalDate dueDate
 ){}

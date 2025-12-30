@@ -39,7 +39,25 @@ public class TaskService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", userId)));
 
-        Task task = buildTask(taskRequest, user);
+        final Task task = buildTask(taskRequest, user);
+        taskRepository.save(task);
+        return TaskResponse.toDomain(task);
+    }
+    @Transactional
+    public TaskResponse update(Long id, UpdateTaskRequest taskRequest) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
+        Long userId = taskRequest.userId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", id)));
+
+        task.setUser(user);
+        task.setTitle(taskRequest.title());
+        task.setDescription(taskRequest.description());
+        task.setState(taskRequest.state());
+        task.setDueDate(taskRequest.dueDate());
+
         taskRepository.save(task);
         return TaskResponse.toDomain(task);
     }
@@ -66,34 +84,7 @@ public class TaskService {
                 .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
-    @Transactional
-    public TaskResponse update(Long id, UpdateTaskRequest taskRequest) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException(id));
 
-        if (taskRequest.userId() != null) {
-            Long userId = taskRequest.userId();
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", id)));
-            task.setUser(user);
-        }
-
-        if (taskRequest.title() != null) {
-            task.setTitle(taskRequest.title());
-        }
-        if (taskRequest.description() != null) {
-            task.setDescription(taskRequest.description());
-        }
-        if (taskRequest.state() != null) {
-            task.setState(taskRequest.state());
-        }
-        if (taskRequest.dueDate() != null) {
-            task.setDueDate(taskRequest.dueDate());
-        }
-
-        taskRepository.save(task);
-        return TaskResponse.toDomain(task);
-    }
 
     @Transactional
     public void delete(Long id){
