@@ -19,6 +19,7 @@ public record UpdateTaskRequest (
     @NotBlank(message = "Description is required")
     String description,
 
+    @NotNull(message = "The state of the task is required")
     TaskState state,
 
     @NotNull(message = "The due date is required")

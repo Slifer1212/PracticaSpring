@@ -4,13 +4,7 @@ import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.enums.TaskState;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface TaskRepository {
-    Task save(Task task);
-    Optional<Task> findById (Long id);
-    List<Task> findAll();
-    void delete (Long id);
-    boolean existsById(Long id);
+public interface TaskRepository extends BaseRepository<Task>{
     List<Task> findByState(TaskState state);
 }
