@@ -36,6 +36,10 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
+    public void changePassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
     // Getters y Setters
     public Long getId() {
         return id;

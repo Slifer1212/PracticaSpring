@@ -1,11 +1,13 @@
 package com.inventory.todoproject.presentation;
 
+import com.inventory.todoproject.application.dto.request.user.ChangePasswordRequest;
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.application.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,4 +51,13 @@ public class UserController {
     public void delete(@PathVariable Long id){
         userService.delete(id);
     }
+
+    @PutMapping("/users/{id}/password")
+    public ResponseEntity<Void> changePassword(@PathVariable Long id,
+                                               @RequestBody @Valid ChangePasswordRequest request)
+    {
+        userService.changePassword(id, request);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -32,13 +32,15 @@ public class TaskMapper {
         if(entity == null) return null;
 
         Task task = new Task();
+
+        task.setId(entity.getId());
         task.setTitle(entity.getTitle());
         task.setDescription(entity.getDescription());
         task.setState(entity.getState());
         task.setCreationDate(entity.getCreationDate());
         task.setDueDate(entity.getDueDate());
         task.setId(entity.getId());
-        task.setUser(userMapper.toDomain(entity.getUser())); //Doesnt works, returns user null
+        task.setUser(userMapper.toDomain(entity.getUser()));
         return task;
     }
 }

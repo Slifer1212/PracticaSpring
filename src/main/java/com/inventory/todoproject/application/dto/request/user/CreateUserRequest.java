@@ -30,5 +30,5 @@ public record CreateUserRequest (
         String password,
 
         @NotEmpty(message = "role must contain at least one role")
-        Set<@NotNull Roles> role
+        Set<@NotNull Roles> roles
 ){}

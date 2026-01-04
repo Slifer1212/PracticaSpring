@@ -32,8 +32,8 @@ public class TaskEntity {
     @Column(name = "due_date")
     private LocalDate dueDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id" )
     private UserEntity user;
 
 }
