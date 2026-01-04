@@ -1,11 +1,11 @@
 package com.inventory.todoproject.application.service;
 
+import com.inventory.todoproject.application.Validator.UserValidator;
 import com.inventory.todoproject.application.dto.request.user.ChangePasswordRequest;
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.domain.entities.User;
-import com.inventory.todoproject.domain.exception.EmailAlreadyExistsException;
 import com.inventory.todoproject.domain.exception.InvalidPasswordException;
 import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,41 +23,44 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserValidator userValidator;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserValidator userValidator) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userValidator = userValidator;
     }
 
     @Transactional
-    public UserResponse create (CreateUserRequest userRequest){
-        Objects.requireNonNull(userRequest, "userRequest must not be null");
-        User user = toEntity(userRequest);
+    public UserResponse create(CreateUserRequest request){
+
+        userValidator.validateUniqueEmail(request.email(), null);
+        userValidator.validateUniqueUsername(request.username(), null);
+        User user = toEntity(request);
         userRepository.save(user);
         return UserResponse.fromDomain(user);
     }
+
 
     @Transactional
     public UserResponse update(Long id, UpdateUserRequest userRequest){
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
                 new SearchCriteria("Id", id )));
 
-        if(userRequest.email() != null && !user.getEmail().equalsIgnoreCase(userRequest.email())){
-
-            userRepository.findByEmail(userRequest.email()).ifPresent(existingUser ->
-            {
-                if(!existingUser.getId().equals(id)){
-                    throw new EmailAlreadyExistsException(userRequest.email());
-                }
-            });
-
+        if (userRequest.email() != null &&
+                !user.getEmail().equalsIgnoreCase(userRequest.email())) {
+            userValidator.validateUniqueEmail(userRequest.email(), id);
             user.setEmail(userRequest.email());
         }
 
-        user.setUsername(userRequest.username());
-        user.setUsername(userRequest.name());
-        user.setUsername(userRequest.lastName());
+        if (userRequest.username() != null &&
+                !user.getUsername().equalsIgnoreCase(userRequest.username())) {
+            userValidator.validateUniqueUsername(userRequest.username(), id);
+            user.setUsername(userRequest.username());
+        }
 
+        if (userRequest.name() != null) user.setName(userRequest.name());
+        if (userRequest.lastName() != null) user.setLastName(userRequest.lastName());
 
         return UserResponse.fromDomain(user);
     }
