@@ -17,7 +17,6 @@ public class TaskMapper {
         if(entity == null) return null;
 
         TaskEntity taskEntity = new TaskEntity();
-
         taskEntity.setId(entity.getId());
         taskEntity.setTitle(entity.getTitle());
         taskEntity.setDescription(entity.getDescription());

@@ -40,8 +40,8 @@ public class TaskService {
                 .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", userId)));
 
         final Task task = buildTask(taskRequest, user);
-        taskRepository.save(task);
-        return TaskResponse.toDomain(task);
+        Task savedTask = taskRepository.save(task);
+        return TaskResponse.toDomain(savedTask);
     }
     @Transactional
     public TaskResponse update(Long id, UpdateTaskRequest taskRequest) {

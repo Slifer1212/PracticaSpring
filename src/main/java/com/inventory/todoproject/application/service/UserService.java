@@ -36,8 +36,8 @@ public class UserService {
         userValidator.validateUniqueEmail(request.email(), null);
         userValidator.validateUniqueUsername(request.username(), null);
         User user = toEntity(request);
-        userRepository.save(user);
-        return UserResponse.fromDomain(user);
+        User savedUser = userRepository.save(user);
+        return UserResponse.fromDomain(savedUser);
     }
 
 

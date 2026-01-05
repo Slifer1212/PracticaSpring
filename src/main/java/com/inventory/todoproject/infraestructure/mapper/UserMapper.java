@@ -14,7 +14,6 @@ public class UserMapper {
         if (user == null) return null;
 
         UserEntity entity = new UserEntity();
-        entity.setId(user.getId());
         entity.setUsername(user.getUsername());
         entity.setName(user.getName());
         entity.setLastName(user.getLastName());
@@ -22,7 +21,6 @@ public class UserMapper {
         entity.setRole(new HashSet<>(user.getRole()));
         entity.setEnabled(user.isEnabled());
         entity.setCreatedAt(user.getCreatedAt());
-
         entity.setPassword(user.getPassword());
 
         return entity;
