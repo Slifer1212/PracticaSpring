@@ -33,7 +33,6 @@ public class UserService {
 
     @Transactional
     public UserResponse create(CreateUserRequest request){
-
         userValidator.validateUniqueEmail(request.email(), null);
         userValidator.validateUniqueUsername(request.username(), null);
         User user = toEntity(request);

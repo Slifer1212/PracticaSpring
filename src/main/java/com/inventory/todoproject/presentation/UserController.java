@@ -52,7 +52,7 @@ public class UserController {
         userService.delete(id);
     }
 
-    @PutMapping("/users/{id}/password")
+    @PutMapping("/{id}/password")
     public ResponseEntity<Void> changePassword(@PathVariable Long id,
                                                @RequestBody @Valid ChangePasswordRequest request)
     {
