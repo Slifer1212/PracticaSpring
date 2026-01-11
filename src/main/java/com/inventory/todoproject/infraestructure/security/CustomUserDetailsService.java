@@ -1,10 +1,10 @@
 package com.inventory.todoproject.infraestructure.security;
 
+import com.inventory.todoproject.application.port.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.enums.Roles;
 import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
-import com.inventory.todoproject.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepositoryPort userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -1,11 +1,11 @@
-package com.inventory.todoproject.presentation;
+package com.inventory.todoproject.presentation.controller;
 
 import com.inventory.todoproject.application.dto.request.auth.LoginRequest;
 import com.inventory.todoproject.application.dto.response.AuthResponse;
+import com.inventory.todoproject.application.port.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
-import com.inventory.todoproject.domain.repositories.UserRepository;
 import com.inventory.todoproject.infraestructure.security.jwt.JwtTokenProvider;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ public class AuthController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepositoryPort userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;

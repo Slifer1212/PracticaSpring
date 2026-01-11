@@ -1,17 +1,17 @@
 package com.inventory.todoproject.infraestructure.repositories;
 
+import com.inventory.todoproject.application.port.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.User;
-import com.inventory.todoproject.domain.repositories.UserRepository;
 import com.inventory.todoproject.infraestructure.entities.UserEntity;
 import com.inventory.todoproject.infraestructure.jparepository.JpaUserRepository;
 import com.inventory.todoproject.infraestructure.mapper.UserMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class UserRepositoryImpl implements UserRepository {
+@Component
+public class UserRepositoryImpl implements UserRepositoryPort {
     private final UserMapper mapper;
     private final JpaUserRepository jpaUserRepository;
 

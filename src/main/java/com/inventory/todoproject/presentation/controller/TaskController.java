@@ -1,4 +1,4 @@
-package com.inventory.todoproject.presentation;
+package com.inventory.todoproject.presentation.controller;
 
 import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;

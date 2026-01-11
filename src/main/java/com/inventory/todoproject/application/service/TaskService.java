@@ -3,14 +3,14 @@ package com.inventory.todoproject.application.service;
 import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
+import com.inventory.todoproject.application.port.out.TaskRepositoryPort;
+import com.inventory.todoproject.application.port.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.enums.TaskState;
 import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.TaskNotFoundException;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
-import com.inventory.todoproject.domain.repositories.TaskRepository;
-import com.inventory.todoproject.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
-    private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
+    private final TaskRepositoryPort taskRepository;
+    private final UserRepositoryPort userRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskService(TaskRepositoryPort taskRepository, UserRepositoryPort userRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
     }

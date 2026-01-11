@@ -1,17 +1,18 @@
 package com.inventory.todoproject.infraestructure.repositories;
 
+import com.inventory.todoproject.application.port.out.TaskRepositoryPort;
 import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.enums.TaskState;
 import com.inventory.todoproject.infraestructure.entities.TaskEntity;
 import com.inventory.todoproject.infraestructure.jparepository.JpaTaskRespository;
 import com.inventory.todoproject.infraestructure.mapper.TaskMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class TaskRepositoryImpl implements com.inventory.todoproject.domain.repositories.TaskRepository {
+@Component
+public class TaskRepositoryImpl implements TaskRepositoryPort {
 
     private final TaskMapper mapper;
     private final JpaTaskRespository jpaRepository;

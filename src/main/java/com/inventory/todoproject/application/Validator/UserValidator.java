@@ -1,15 +1,15 @@
 package com.inventory.todoproject.application.Validator;
 
+import com.inventory.todoproject.application.port.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.exception.EmailAlreadyExistsException;
 import com.inventory.todoproject.domain.exception.UsernameAlreadyExistsException;
-import com.inventory.todoproject.domain.repositories.UserRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserValidator {
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
 
-    public UserValidator(UserRepository userRepository) {
+    public UserValidator(UserRepositoryPort userRepository) {
         this.userRepository = userRepository;
     }
 

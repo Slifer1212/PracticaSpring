@@ -5,11 +5,11 @@ import com.inventory.todoproject.application.dto.request.user.ChangePasswordRequ
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
+import com.inventory.todoproject.application.port.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.exception.InvalidPasswordException;
 import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
-import com.inventory.todoproject.domain.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserValidator userValidator) {
+    public UserService(UserRepositoryPort userRepository, PasswordEncoder passwordEncoder, UserValidator userValidator) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userValidator = userValidator;

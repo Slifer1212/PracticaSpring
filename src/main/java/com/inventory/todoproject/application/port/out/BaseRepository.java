@@ -1,4 +1,4 @@
-package com.inventory.todoproject.domain.repositories;
+package com.inventory.todoproject.application.port.out;
 
 
 import java.util.List;
