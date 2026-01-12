@@ -1,7 +1,7 @@
-package com.inventory.todoproject.infraestructure.mapper;
+package com.inventory.todoproject.infraestructure.adapters.out.persistence.mapper;
 
 import com.inventory.todoproject.domain.entities.Task;
-import com.inventory.todoproject.infraestructure.entities.TaskEntity;
+import com.inventory.todoproject.infraestructure.adapters.out.persistence.entities.TaskEntity;
 import org.springframework.stereotype.Component;
 
 @Component

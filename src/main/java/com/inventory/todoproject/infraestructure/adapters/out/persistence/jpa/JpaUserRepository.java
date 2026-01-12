@@ -1,6 +1,6 @@
-package com.inventory.todoproject.infraestructure.jparepository;
+package com.inventory.todoproject.infraestructure.adapters.out.persistence.jpa;
 
-import com.inventory.todoproject.infraestructure.entities.UserEntity;
+import com.inventory.todoproject.infraestructure.adapters.out.persistence.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

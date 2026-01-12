@@ -1,7 +1,7 @@
-package com.inventory.todoproject.infraestructure.mapper;
+package com.inventory.todoproject.infraestructure.adapters.out.persistence.mapper;
 
 import com.inventory.todoproject.domain.entities.User;
-import com.inventory.todoproject.infraestructure.entities.UserEntity;
+import com.inventory.todoproject.infraestructure.adapters.out.persistence.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;

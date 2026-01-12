@@ -1,4 +1,4 @@
-package com.inventory.todoproject.infraestructure.entities;
+package com.inventory.todoproject.infraestructure.adapters.out.persistence.entities;
 
 import com.inventory.todoproject.domain.enums.Roles;
 import jakarta.persistence.*;

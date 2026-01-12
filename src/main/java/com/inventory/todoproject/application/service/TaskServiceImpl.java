@@ -21,12 +21,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class TaskService {
+public class TaskServiceImpl {
     private final TaskRepositoryPort taskRepository;
     private final UserRepositoryPort userRepository;
 
     @Autowired
-    public TaskService(TaskRepositoryPort taskRepository, UserRepositoryPort userRepository) {
+    public TaskServiceImpl(TaskRepositoryPort taskRepository, UserRepositoryPort userRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
     }

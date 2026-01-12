@@ -1,4 +1,4 @@
-package com.inventory.todoproject.presentation.controller;
+package com.inventory.todoproject.infraestructure.adapters.in.rest;
 
 import com.inventory.todoproject.application.dto.request.auth.LoginRequest;
 import com.inventory.todoproject.application.dto.response.AuthResponse;

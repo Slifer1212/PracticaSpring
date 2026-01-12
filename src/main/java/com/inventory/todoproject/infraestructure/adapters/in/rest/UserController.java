@@ -1,10 +1,10 @@
-package com.inventory.todoproject.presentation.controller;
+package com.inventory.todoproject.infraestructure.adapters.in.rest;
 
 import com.inventory.todoproject.application.dto.request.user.ChangePasswordRequest;
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
-import com.inventory.todoproject.application.service.UserService;
+import com.inventory.todoproject.application.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 

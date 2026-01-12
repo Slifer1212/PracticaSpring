@@ -1,9 +1,9 @@
-package com.inventory.todoproject.presentation.controller;
+package com.inventory.todoproject.infraestructure.adapters.in.rest;
 
 import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
-import com.inventory.todoproject.application.service.TaskService;
+import com.inventory.todoproject.application.service.TaskServiceImpl;
 import com.inventory.todoproject.domain.enums.TaskState;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
-    private final TaskService taskService;
+    private final TaskServiceImpl taskService;
 
     @Autowired
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskServiceImpl taskService) {
         this.taskService = taskService;
     }
 
@@ -27,7 +27,7 @@ public class TaskController {
     }
 
     @PostMapping()
-    public TaskResponse create(@Valid @RequestBody CreateTaskRequest request){
+    public TaskResponse create(@Valid @RequestBody CreateTaskRequest request ){
         return taskService.create(request);
     }
 

@@ -1,4 +1,4 @@
-package com.inventory.todoproject.infraestructure.entities;
+package com.inventory.todoproject.infraestructure.adapters.out.persistence.entities;
 
 import com.inventory.todoproject.domain.enums.TaskState;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.inventory.todoproject.presentation.exception;
+package com.inventory.todoproject.infraestructure.adapters.in.rest.exception;
 
 import com.inventory.todoproject.domain.exception.DomainNotFoundException;
 import com.inventory.todoproject.domain.exception.EmailAlreadyExistsException;
