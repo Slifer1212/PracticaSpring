@@ -1,4 +1,4 @@
-package com.inventory.todoproject.application.port.in;
+package com.inventory.todoproject.application.ports.in;
 
 import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;

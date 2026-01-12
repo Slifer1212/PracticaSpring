@@ -11,30 +11,37 @@ public class Task {
     private TaskState state;
     private LocalDate creationDate;
     private LocalDate dueDate;
-    private User user;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    private Long userId;
 
 
     public Task(String title, String description, TaskState state,
-                LocalDate creationDate, LocalDate dueDate, User user) {
+                LocalDate creationDate, LocalDate dueDate, Long userId) {
         this.title = title;
         this.description = description;
         this.state = state;
         this.creationDate = creationDate;
         this.dueDate = dueDate;
-        this.user = user;
+        this.userId = userId;
     }
 
     public Task(){}
 
+    public boolean isOwnedBy(Long userId){
+        return this.userId.equals(userId);
+    }
+
     // Getters y Setters
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Long getId() {
         return id;

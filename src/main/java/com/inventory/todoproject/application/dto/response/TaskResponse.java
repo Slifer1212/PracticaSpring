@@ -12,7 +12,7 @@ public record TaskResponse (
      String description,
      TaskState state,
      LocalDate dueDate,
-     UserResponse user
+     Long userId
 )
 {
     public static TaskResponse toDomain(Task task) {
@@ -24,7 +24,6 @@ public record TaskResponse (
                 task.getDescription(),
                 task.getState(),
                 task.getDueDate(),
-                UserResponse.fromDomain(task.getUser())
-        );
+                task.getUserId());
     }
 }

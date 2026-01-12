@@ -1,9 +1,8 @@
 package com.inventory.todoproject.infraestructure.security;
 
-import com.inventory.todoproject.application.port.out.UserRepositoryPort;
+import com.inventory.todoproject.application.ports.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.enums.Roles;
-import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

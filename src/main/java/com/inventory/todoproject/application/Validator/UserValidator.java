@@ -1,6 +1,6 @@
 package com.inventory.todoproject.application.Validator;
 
-import com.inventory.todoproject.application.port.out.UserRepositoryPort;
+import com.inventory.todoproject.application.ports.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.exception.EmailAlreadyExistsException;
 import com.inventory.todoproject.domain.exception.UsernameAlreadyExistsException;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class UserValidator {
     }
 
     public void validateUniqueUsername(String userName, Long userId){
-        userRepository.findByUserName(userName).ifPresent(
+        userRepository.findByUsername(userName).ifPresent(
                 user -> {
                     if(!user.getId().equals(userId)){
                         throw  new UsernameAlreadyExistsException(userName);

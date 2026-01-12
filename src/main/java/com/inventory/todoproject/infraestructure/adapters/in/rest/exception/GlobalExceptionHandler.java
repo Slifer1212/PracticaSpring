@@ -1,6 +1,6 @@
 package com.inventory.todoproject.infraestructure.adapters.in.rest.exception;
 
-import com.inventory.todoproject.domain.exception.DomainNotFoundException;
+import com.inventory.todoproject.domain.exception.DomainException;
 import com.inventory.todoproject.domain.exception.EmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +24,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(DomainNotFoundException.class)
+    @ExceptionHandler(DomainException.class)
     public ResponseEntity<Map<String, String>> handleDomainNotFound(
-            DomainNotFoundException ex) {
+            DomainException ex) {
 
         Map<String, String> error = new HashMap<>();
         error.put("message", ex.getMessage());

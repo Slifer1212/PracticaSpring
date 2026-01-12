@@ -3,12 +3,11 @@ package com.inventory.todoproject.application.service;
 import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
-import com.inventory.todoproject.application.port.out.TaskRepositoryPort;
-import com.inventory.todoproject.application.port.out.UserRepositoryPort;
+import com.inventory.todoproject.application.ports.in.TaskUseCase;
+import com.inventory.todoproject.application.ports.out.TaskRepositoryPort;
+import com.inventory.todoproject.application.ports.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.Task;
-import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.enums.TaskState;
-import com.inventory.todoproject.domain.exception.SearchCriteria;
 import com.inventory.todoproject.domain.exception.TaskNotFoundException;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class TaskServiceImpl {
+@Transactional
+public class TaskServiceImpl implements TaskUseCase {
     private final TaskRepositoryPort taskRepository;
     private final UserRepositoryPort userRepository;
 
@@ -31,68 +30,103 @@ public class TaskServiceImpl {
         this.userRepository = userRepository;
     }
 
-    @Transactional
-    public TaskResponse create(CreateTaskRequest taskRequest) {
-        Objects.requireNonNull(taskRequest, "taskRequest must not be null");
+    @Override
+    public TaskResponse createTask(CreateTaskRequest request, Long userId) {
+        if(!userRepository.existsById(userId)){
+            throw new UserNotFoundException(userId);
+        }
 
-        Long userId = taskRequest.userId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", userId)));
-
-        final Task task = buildTask(taskRequest, user);
+        final Task task = buildTask(request);
         Task savedTask = taskRepository.save(task);
-        return TaskResponse.toDomain(savedTask);
-    }
-    @Transactional
-    public TaskResponse update(Long id, UpdateTaskRequest taskRequest) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException(id));
+        return mapToResponse(savedTask);
 
-        Long userId = taskRequest.userId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(new SearchCriteria("id", id)));
-
-        task.setUser(user);
-        task.setTitle(taskRequest.title());
-        task.setDescription(taskRequest.description());
-        task.setState(taskRequest.state());
-        task.setDueDate(taskRequest.dueDate());
-
-        taskRepository.save(task);
-        return TaskResponse.toDomain(task);
     }
 
-    private Task buildTask(CreateTaskRequest request, User user) {
+    @Override
+    public TaskResponse updateTask(Long taskId, UpdateTaskRequest request, Long userId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        if(task.isOwnedBy(userId)){
+            throw new IllegalArgumentException("Task does not belong to user");
+        }
+
+        task.setTitle(request.title());
+        task.setDescription(request.description());
+        task.setState(request.state());
+        task.setDueDate(request.dueDate());
+        Task updatedTask = taskRepository.save(task);
+
+        return mapToResponse(updatedTask);
+    }
+
+    @Override
+    public void deleteTask(Long taskId, Long userId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found"));
+
+        if (!task.isOwnedBy(userId)) {
+            throw new IllegalArgumentException("Task does not belong to user");
+        }
+        taskRepository.deleteById(taskId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TaskResponse getTaskById(Long taskId, Long userId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(
+                () -> new TaskNotFoundException(taskId)
+        );
+
+        if(!task.isOwnedBy(userId))
+        {
+            throw new IllegalArgumentException("Task does not belong to this user");
+        }
+        return mapToResponse(task);
+    }
+
+    @Override
+    public List<TaskResponse> getAllTasksByUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException(userId);
+        }
+
+        return taskRepository.findAllByUserId(userId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskResponse> getTasksByState(TaskState state, Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException(userId);
+        }
+
+        return taskRepository.findByUserIdAndState(userId, state).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    private TaskResponse mapToResponse(Task task) {
+        TaskResponse response = new TaskResponse(
+                task.getUserId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getState(),
+                task.getDueDate(),
+                task.getUserId()
+        );
+        return response;
+    }
+
+    private Task buildTask(CreateTaskRequest request){
         Task task = new Task();
         task.setTitle(request.title());
         task.setDescription(request.description());
         task.setState(TaskState.PENDING);
         task.setCreationDate(LocalDate.now());
         task.setDueDate(request.dueDate());
-        task.setUser(user);
+        task.setUserId(request.userId());
         return task;
-    }
-
-    public List<TaskResponse> findAll(){
-        return taskRepository.findAll().stream().map
-                (TaskResponse::toDomain).collect(Collectors.toList());
-    }
-
-    public TaskResponse findOne(Long id){
-        return taskRepository.findById(id)
-                .map(TaskResponse::toDomain)
-                .orElseThrow(() -> new TaskNotFoundException(id));
-    }
-
-
-
-    @Transactional
-    public void delete(Long id){
-        taskRepository.delete(id);
-    }
-
-    public List<TaskResponse>findByState(TaskState state){
-        return taskRepository.findByState(state).stream().
-                map(TaskResponse::toDomain).collect(Collectors.toList());
     }
 }
