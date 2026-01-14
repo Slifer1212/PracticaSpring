@@ -4,8 +4,6 @@ import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.infraestructure.adapters.out.persistence.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-
 @Component
 public class UserMapper {
 
@@ -18,7 +16,7 @@ public class UserMapper {
         entity.setName(user.getName());
         entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());
-        entity.setRole(new HashSet<>(user.getRole()));
+        entity.setRole(user.getRole());
         entity.setEnabled(user.isEnabled());
         entity.setCreatedAt(user.getCreatedAt());
         entity.setPassword(user.getPassword());
@@ -35,7 +33,7 @@ public class UserMapper {
         user.setName(entity.getName());
         user.setLastName(entity.getLastName());
         user.setEmail(entity.getEmail());
-        user.setRole(new HashSet<>(entity.getRole()));
+        user.setRole(entity.getRole());
         user.setEnabled(entity.isEnabled());
         user.setCreatedAt(entity.getCreatedAt());
 

@@ -3,8 +3,6 @@ package com.inventory.todoproject.application.dto.request.user;
 import com.inventory.todoproject.domain.enums.Roles;
 import jakarta.validation.constraints.*;
 
-import java.util.Set;
-
 public record CreateUserRequest (
 
         @NotBlank(message = "username must not be blank")
@@ -30,5 +28,6 @@ public record CreateUserRequest (
         String password,
 
         @NotEmpty(message = "role must contain at least one role")
-        Set<@NotNull Roles> roles
+        @NotNull
+        Roles role
 ){}
