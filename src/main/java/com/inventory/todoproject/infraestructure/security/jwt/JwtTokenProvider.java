@@ -1,25 +1,19 @@
 package com.inventory.todoproject.infraestructure.security.jwt;
 
-import io.jsonwebtoken.*;
+import com.inventory.todoproject.domain.entities.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
-
-    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -28,24 +22,17 @@ public class JwtTokenProvider {
     private Long expiration;
 
     private SecretKey getSignKey(){
-        byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(Authentication auth){
-
-        UserDetails userPrincipal = (UserDetails) auth.getPrincipal();
+    public String generateToken(User user){
 
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + expiration);
 
-        String roles = userPrincipal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-               .collect(Collectors.joining(","));
-
         return Jwts.builder()
-                .subject(userPrincipal.getUsername())
-                .claim("roles" , roles)
+                .subject(user.getUsername())
+                .claim("role", "ROLE_" + user.getRole().name())
                 .issuedAt(now)
                 .expiration(expirationDate)
                 .signWith(getSignKey())
@@ -61,24 +48,33 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    public boolean validateToken(String authToken) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parser()
                     .verifyWith(getSignKey())
                     .build()
-                    .parseSignedClaims(authToken);
+                    .parseSignedClaims(token);
             return true;
-        } catch (SignatureException e) {
-            logger.error("Invalid JWT signature: {}", e.getMessage());
-        } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT token is expired: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            logger.error("JWT token is unsupported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty: {}", e.getMessage());
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
         }
-        return false;
     }
+
+    public Long getUserIdFromToken(String token) {
+
+        Claims claims = Jwts.parser()
+                .verifyWith(getSignKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        Object userId = claims.get("userId");
+
+        if (userId instanceof Integer) {
+            return ((Integer) userId).longValue();
+        }
+
+        return (Long) userId;
+    }
+
 }

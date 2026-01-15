@@ -1,12 +1,12 @@
 package com.inventory.todoproject.application.dto.response;
 
-import java.util.Set;
+import com.inventory.todoproject.domain.enums.Roles;
+
 
 public record AuthResponse(
-        String jwt,
-        Long Id,
+        String token,
+        Long userId,
         String username,
-        String password,
-        Set<String> roles
+        Roles role
 ) {
 }
