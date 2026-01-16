@@ -7,7 +7,7 @@ import com.inventory.todoproject.application.ports.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.exception.InvalidPasswordException;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
-import com.inventory.todoproject.infraestructure.security.jwt.JwtTokenProvider;
+import com.inventory.todoproject.infrastructure.security.jwt.JwtTokenProvider;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,14 +63,12 @@ public class AuthServiceImpl  implements AuthUseCase {
 
         String newToken = jwtTokenProvider.generateToken(user);
 
-        AuthResponse response = new AuthResponse(
+
+        return new AuthResponse(
                 newToken,
                 user.getId(),
                 user.getUsername(),
                 user.getRole()
         );
-
-
-        return response;
     }
 }
