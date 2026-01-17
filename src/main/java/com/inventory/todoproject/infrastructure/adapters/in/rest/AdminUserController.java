@@ -1,9 +1,12 @@
 package com.inventory.todoproject.infrastructure.adapters.in.rest;
 
+import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.application.ports.in.UserUseCase;
+import com.inventory.todoproject.domain.enums.Roles;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -47,4 +50,13 @@ public class AdminUserController {
         userUseCase.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/create-admin")
+    public ResponseEntity<UserResponse> createAdminUser(
+            @Valid @RequestBody CreateUserRequest request) {
+
+        UserResponse response = userUseCase.createUserWithRole(request, Roles.ADMIN);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
 }

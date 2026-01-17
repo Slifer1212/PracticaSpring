@@ -4,6 +4,7 @@ import com.inventory.todoproject.application.dto.request.user.ChangePasswordRequ
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
+import com.inventory.todoproject.domain.enums.Roles;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface UserUseCase {
     UserResponse getUserById (Long userId);
     List<UserResponse> getAllUsers();
     void changePassword(Long userId, ChangePasswordRequest request);
-
+    UserResponse createUserWithRole(CreateUserRequest request, Roles roles);
 }

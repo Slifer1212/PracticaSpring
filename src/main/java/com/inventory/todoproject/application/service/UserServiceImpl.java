@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserUseCase {
         userValidator.validateUniqueEmail(request.email() , null);
         userValidator.validateUniqueUsername(request.username() , null);
 
-        final User user = buildUser(request);
+        final User user = buildUser(request,Roles.CLIENT);
         User savedUser = userRepository.save(user);
         return mapToResponse(savedUser);
     }
@@ -111,18 +111,28 @@ public class UserServiceImpl implements UserUseCase {
         userRepository.save(user);
     }
 
-    private User buildUser(CreateUserRequest request){
+    @Override
+    public UserResponse createUserWithRole(CreateUserRequest request, Roles roles) {
+        userValidator.validateUniqueEmail(request.email() , null);
+        userValidator.validateUniqueUsername(request.username() , null);
+        User user = buildUser(request, roles);
+        User savedUser = userRepository.save(user);
+        return mapToResponse(savedUser);
+    }
+
+    private User buildUser(CreateUserRequest request, Roles role){
         User user = new User();
         user.setName(request.name());
         user.setLastName(request.lastName());
         user.setUsername(request.username());
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setEmail(request.email());
-        user.setRole(Roles.CLIENT);
+        user.setRole(role);
         user.setEnabled(true);
         user.setCreatedAt(LocalDateTime.now());
         return user;
     }
+
 
     private UserResponse mapToResponse(User user){
         UserResponse response = new UserResponse(
