@@ -15,5 +15,4 @@ public interface JpaTaskRepository extends JpaRepository<TaskEntity, Long> {
 
     List<TaskEntity> findByUserIdAndState(Long userId, TaskState state);
 
-    boolean existsByIdAndUserId(Long id, Long userId);
 }
