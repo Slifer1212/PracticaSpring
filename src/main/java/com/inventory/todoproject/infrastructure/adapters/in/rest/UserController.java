@@ -5,6 +5,7 @@ import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.application.ports.in.UserUseCase;
+import com.inventory.todoproject.infrastructure.security.jwt.JwtAuthenticationDetails;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,9 @@ public class UserController {
 
 
     private Long getUserIdFromAuthentication (Authentication authentication){
-        return Long.parseLong(authentication.getName());
+        if (authentication.getDetails() instanceof JwtAuthenticationDetails) {
+            return ((JwtAuthenticationDetails) authentication.getDetails()).getUserId();
+        }
+        throw new IllegalStateException("Authentication details do not contain userId");
     }
 }

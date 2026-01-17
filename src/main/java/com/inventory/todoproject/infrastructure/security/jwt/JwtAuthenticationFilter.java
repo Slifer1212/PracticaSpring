@@ -45,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)){
 
                 String username = jwtTokenProvider.getUsernameFromToken(jwt);
+                Long userId = jwtTokenProvider.getUserIdFromToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
@@ -55,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 userDetails.getAuthorities()
                         );
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authentication.setDetails(new JwtAuthenticationDetails(request, userId));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 logger.debug("User '{}' authenticated successfully", username);

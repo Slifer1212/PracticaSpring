@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserUseCase {
             throw new InvalidPasswordException("Current password is incorrect");
         }
 
-        user.changePassword(passwordEncoder.encode(request.currentPassword()));
+        user.changePassword(passwordEncoder.encode(request.newPassword()));
 
         userRepository.save(user);
     }
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserUseCase {
                 user.getUsername(),
                 user.getName(),
                 user.getLastName(),
-                user.getLastName()
+                user.getEmail()
         );
         return response;
     }
