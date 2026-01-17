@@ -5,6 +5,7 @@ import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.application.ports.in.TaskUseCase;
 import com.inventory.todoproject.domain.enums.TaskState;
+import com.inventory.todoproject.infrastructure.security.jwt.JwtAuthenticationDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -114,7 +115,9 @@ public class TaskController {
     }
 
     private Long getUserIdFromAuthentication(Authentication authentication) {
-        // El JwtAuthenticationFilter debe poner el userId en el name del Authentication
-        return Long.parseLong(authentication.getName());
+        if (authentication.getDetails() instanceof JwtAuthenticationDetails) {
+            return ((JwtAuthenticationDetails) authentication.getDetails()).getUserId();
+        }
+        throw new IllegalStateException("Authentication details do not contain userId");
     }
 }
