@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,8 +119,11 @@ public class UserServiceImpl implements UserUseCase {
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setEmail(request.email());
         user.setRole(Roles.CLIENT);
+        user.setEnabled(true);
+        user.setCreatedAt(LocalDateTime.now());
         return user;
     }
+
     private UserResponse mapToResponse(User user){
         UserResponse response = new UserResponse(
                 user.getId(),

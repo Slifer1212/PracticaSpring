@@ -11,15 +11,6 @@ public class Task {
     private TaskState state;
     private LocalDate creationDate;
     private LocalDate dueDate;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     private Long userId;
 
 
@@ -90,4 +81,13 @@ public class Task {
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
 }

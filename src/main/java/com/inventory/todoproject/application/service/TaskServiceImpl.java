@@ -32,7 +32,7 @@ public class TaskServiceImpl implements TaskUseCase {
 
     @Override
     public TaskResponse createTask(CreateTaskRequest request, Long userId) {
-        if(userRepository.existsById(userId)){
+        if(!userRepository.existsById(userId)){
             throw new UserNotFoundException(userId);
         }
 
@@ -87,7 +87,7 @@ public class TaskServiceImpl implements TaskUseCase {
 
     @Override
     public List<TaskResponse> getAllTasksByUser(Long userId) {
-        if (userRepository.existsById(userId)) {
+        if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException(userId);
         }
 
@@ -98,7 +98,7 @@ public class TaskServiceImpl implements TaskUseCase {
 
     @Override
     public List<TaskResponse> getTasksByState(TaskState state, Long userId) {
-        if (userRepository.existsById(userId)) {
+        if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException(userId);
         }
 
@@ -109,7 +109,7 @@ public class TaskServiceImpl implements TaskUseCase {
 
     private TaskResponse mapToResponse(Task task) {
         TaskResponse response = new TaskResponse(
-                task.getUserId(),
+                task.getId(),
                 task.getTitle(),
                 task.getDescription(),
                 task.getState(),

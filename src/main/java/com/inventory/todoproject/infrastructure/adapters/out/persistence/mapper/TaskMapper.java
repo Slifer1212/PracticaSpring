@@ -22,7 +22,7 @@ public class TaskMapper {
         taskEntity.setDescription(entity.getDescription());
         taskEntity.setState(entity.getState());
         taskEntity.setDueDate(entity.getDueDate());
-        entity.setUserId(entity.getUserId());
+        taskEntity.setUserId(entity.getUserId());
         taskEntity.setCreationDate(entity.getCreationDate());
         return taskEntity;
     }

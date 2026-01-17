@@ -4,6 +4,8 @@ import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.infrastructure.adapters.out.persistence.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class UserMapper {
 
@@ -18,6 +20,7 @@ public class UserMapper {
         entity.setEmail(user.getEmail());
         entity.setRole(user.getRole());
         entity.setEnabled(user.isEnabled());
+        entity.setCreatedAt(LocalDateTime.now());
         entity.setCreatedAt(user.getCreatedAt());
         entity.setPassword(user.getPassword());
 
@@ -36,7 +39,6 @@ public class UserMapper {
         user.setRole(entity.getRole());
         user.setEnabled(entity.isEnabled());
         user.setCreatedAt(entity.getCreatedAt());
-
         user.setPassword(entity.getPassword());
         return user;
     }
