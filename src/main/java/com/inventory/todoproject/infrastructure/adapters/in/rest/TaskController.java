@@ -3,10 +3,12 @@ package com.inventory.todoproject.infrastructure.adapters.in.rest;
 import com.inventory.todoproject.application.dto.request.task.CreateTaskRequest;
 import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
-import com.inventory.todoproject.application.service.TaskServiceImpl;
+import com.inventory.todoproject.application.ports.in.TaskUseCase;
 import com.inventory.todoproject.domain.enums.TaskState;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,40 +16,105 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
-    private final TaskServiceImpl taskService;
 
-    @Autowired
-    public TaskController(TaskServiceImpl taskService) {
-        this.taskService = taskService;
+    private final TaskUseCase taskUseCase;
+
+    public TaskController(TaskUseCase taskUseCase) {
+        this.taskUseCase = taskUseCase;
     }
 
-    @GetMapping()
-    public List<TaskResponse> getAll(){
-        return taskService.findAll();
+    /**
+     * Crea una nueva tarea
+     * POST /api/tasks
+     */
+    @PostMapping
+    public ResponseEntity<TaskResponse> createTask(
+            @Valid @RequestBody CreateTaskRequest request,
+            Authentication authentication) {
+
+        Long userId = getUserIdFromAuthentication(authentication);
+        TaskResponse response = taskUseCase.createTask(request, userId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping()
-    public TaskResponse create(@Valid @RequestBody CreateTaskRequest request ){
-        return taskService.create(request);
-    }
-
-    @GetMapping("/{id}")
-    public TaskResponse getOne(@PathVariable Long id){
-        return taskService.findOne(id);
-    }
-
-    @GetMapping("/state/{state}")
-    public List<TaskResponse> getByState(@PathVariable TaskState state){
-        return taskService.findByState(state);
-    }
-
+    /**
+     * Actualiza una tarea existente
+     * PUT /api/tasks/{id}
+     */
     @PutMapping("/{id}")
-    public TaskResponse update (@PathVariable Long id, @Valid @RequestBody UpdateTaskRequest updateTaskRequest){
-        return taskService.update(id, updateTaskRequest);
+    public ResponseEntity<TaskResponse> updateTask(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateTaskRequest request,
+            Authentication authentication) {
+
+        Long userId = getUserIdFromAuthentication(authentication);
+        TaskResponse response = taskUseCase.updateTask(id, request, userId);
+
+        return ResponseEntity.ok(response);
     }
 
+    /**
+     * Elimina una tarea
+     * DELETE /api/tasks/{id}
+     */
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
-        taskService.delete(id);
+    public ResponseEntity<Void> deleteTask(
+            @PathVariable Long id,
+            Authentication authentication) {
+
+        Long userId = getUserIdFromAuthentication(authentication);
+        taskUseCase.deleteTask(id, userId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Obtiene una tarea por ID
+     * GET /api/tasks/{id}
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponse> getTaskById(
+            @PathVariable Long id,
+            Authentication authentication) {
+
+        Long userId = getUserIdFromAuthentication(authentication);
+        TaskResponse response = taskUseCase.getTaskById(id, userId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Obtiene todas las tareas del usuario autenticado
+     * GET /api/tasks
+     */
+    @GetMapping
+    public ResponseEntity<List<TaskResponse>> getAllTasks(
+            Authentication authentication) {
+
+        Long userId = getUserIdFromAuthentication(authentication);
+        List<TaskResponse> tasks = taskUseCase.getAllTasksByUser(userId);
+
+        return ResponseEntity.ok(tasks);
+    }
+
+    /**
+     * Obtiene tareas filtradas por estado
+     * GET /api/tasks/by-state/{state}
+     */
+    @GetMapping("/by-state/{state}")
+    public ResponseEntity<List<TaskResponse>> getTasksByState(
+            @PathVariable TaskState state,
+            Authentication authentication) {
+
+        Long userId = getUserIdFromAuthentication(authentication);
+        List<TaskResponse> tasks = taskUseCase.getTasksByState(state, userId);
+
+        return ResponseEntity.ok(tasks);
+    }
+
+    private Long getUserIdFromAuthentication(Authentication authentication) {
+        // El JwtAuthenticationFilter debe poner el userId en el name del Authentication
+        return Long.parseLong(authentication.getName());
     }
 }

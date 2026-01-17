@@ -1,29 +1,41 @@
 package com.inventory.todoproject.infrastructure.adapters.in.rest;
 
-import com.inventory.todoproject.application.ports.out.UserRepositoryPort;
-import com.inventory.todoproject.infrastructure.security.jwt.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.inventory.todoproject.application.dto.request.auth.LoginRequest;
+import com.inventory.todoproject.application.dto.response.AuthResponse;
+import com.inventory.todoproject.application.ports.in.AuthUseCase;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
+    private final AuthUseCase authUseCase;
 
-    private final JwtTokenProvider jwtTokenProvider;
-
-    private final UserRepositoryPort userRepository;
-
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepositoryPort userRepository) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userRepository = userRepository;
+    public AuthController(AuthUseCase authUseCase) {
+        this.authUseCase = authUseCase;
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request){
+        AuthResponse response = authUseCase.login(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refreshToken(
+            @RequestHeader("Authorization") String authorizationHeader) {
+        String token = extractTokenFromHeader(authorizationHeader);
+        AuthResponse response = authUseCase.refreshToken(token);
+
+        return ResponseEntity.ok(response);
+    }
+
+    private String extractTokenFromHeader(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        throw new IllegalArgumentException("Invalid Authorization header");
+    }
 }

@@ -52,12 +52,17 @@ public class SecurityConfig {
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests
-                        (auth -> auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/user/**").permitAll()
-                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/api/tasks/**").hasAnyRole("ADMIN" , "CLIENT")
-                                .anyRequest().authenticated());
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/users/register").permitAll()
+
+                        .requestMatchers("/api/users/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").authenticated()
+
+                        .requestMatchers("/api/tasks/**").hasAnyRole("ADMIN", "CLIENT")
+                        .anyRequest().authenticated()
+                );
+
         httpSecurity.authenticationProvider(authenticationProvider());
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

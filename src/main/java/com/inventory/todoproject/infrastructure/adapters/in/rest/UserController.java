@@ -4,60 +4,63 @@ import com.inventory.todoproject.application.dto.request.user.ChangePasswordRequ
 import com.inventory.todoproject.application.dto.request.user.CreateUserRequest;
 import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
-import com.inventory.todoproject.application.service.UserServiceImpl;
+import com.inventory.todoproject.application.ports.in.UserUseCase;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
-    private final UserServiceImpl userService;
+    private final UserUseCase userUseCase;
 
     @Autowired
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
+    public UserController(UserUseCase userUseCase) {
+        this.userUseCase = userUseCase;
     }
 
-    @PostMapping()
-    public UserResponse create(@Valid @RequestBody CreateUserRequest request){
-        return userService.create(request);
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication){
+        Long userId = getUserIdFromAuthentication(authentication);
+        UserResponse response = userUseCase.getUserById(userId);
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping()
-    public List<UserResponse> getAll(){
-        return userService.findAll();
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody  CreateUserRequest request){
+        UserResponse response = userUseCase.createUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/username/{username}")
-    public UserResponse getByNameAndLastName(@PathVariable String username){
-        return userService.findByUserName(username);
+    @PutMapping("/me")
+    public ResponseEntity<UserResponse> updateCurrentUser(@Valid @RequestBody UpdateUserRequest request, Authentication authentication){
+        Long userId = getUserIdFromAuthentication(authentication);
+        UserResponse response  = userUseCase.updateUser(userId , request);
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/email/{email}")
-    public UserResponse getByEmail(@PathVariable String email){
-        return userService.findByEmail(email);
-    }
-
-    @PutMapping("/{id}")
-    public UserResponse update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest userRequest){
-        return userService.update(id, userRequest);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
-        userService.delete(id);
-    }
-
-    @PutMapping("/{id}/password")
-    public ResponseEntity<Void> changePassword(@PathVariable Long id,
-                                               @RequestBody @Valid ChangePasswordRequest request)
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request,
+                                               Authentication authentication)
     {
-        userService.changePassword(id, request);
+       Long userId = getUserIdFromAuthentication(authentication);
+       userUseCase.changePassword(userId, request);
+       return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteCurrentUser(Authentication authentication){
+        Long userId = getUserIdFromAuthentication(authentication);
+        userUseCase.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
+
+    private Long getUserIdFromAuthentication (Authentication authentication){
+        return Long.parseLong(authentication.getName());
+    }
 }
