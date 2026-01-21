@@ -1,8 +1,8 @@
 package com.inventory.todoproject.infrastructure.adapters.out.persistence.jpa;
 
 import com.inventory.todoproject.domain.enums.TaskState;
-import com.inventory.todoproject.domain.pagination.Page;
 import com.inventory.todoproject.infrastructure.adapters.out.persistence.entities.TaskEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

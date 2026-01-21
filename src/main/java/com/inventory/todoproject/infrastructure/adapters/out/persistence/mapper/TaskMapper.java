@@ -7,11 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskMapper {
 
-    private final UserMapper userMapper;
-
-    public TaskMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     public TaskEntity toEntity(Task entity){
         if(entity == null) return null;

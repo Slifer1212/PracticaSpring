@@ -67,11 +67,46 @@ public class TaskRepositoryAdapter implements TaskRepositoryPort {
 
     @Override
     public Page<Task> findAllByUserId(Long userId, PageRequest pageRequest) {
-      return null;
+        // Convertir PageRequest de dominio a Spring Data PageRequest
+        org.springframework.data.domain.PageRequest springPageRequest =
+                convertToSpringPageRequest(pageRequest);
+
+        // Llamar al JPA Repository
+        org.springframework.data.domain.Page<com.inventory.todoproject
+                .infrastructure.adapters.out.persistence.entities.TaskEntity> springPage =
+                jpaTaskRepository.findAllByUserId(userId, springPageRequest);
+
+        // Mapear entidades a dominio
+        List<Task> tasks = springPage.getContent()
+                .stream()
+                .map(taskMapper::toDomain)
+                .collect(Collectors.toList());
+
+        // Crear Page de dominio
+        return new Page<>(
+                tasks,
+                springPage.getNumber(),
+                springPage.getSize(),
+                springPage.getTotalElements()
+        );
     }
+
     @Override
     public Page<Task> findByUserIdAndState(Long userId, TaskState state, PageRequest pageRequest) {
-        return null;
+        org.springframework.data.domain.PageRequest springPageRequest =
+                convertToSpringPageRequest(pageRequest);
+        org.springframework.data.domain.Page<com.inventory.todoproject.infrastructure.adapters.out.persistence.entities.TaskEntity> springPage =
+                jpaTaskRepository.findByUserIdAndState(userId, state, springPageRequest);
+
+        List<Task> tasks = springPage.getContent().stream().map(taskMapper::toDomain)
+                .toList();
+
+        return new Page<>(
+                tasks,
+                springPage.getNumber(),
+                springPage.getSize(),
+                springPage.getTotalElements()
+        );
     }
 
     private org.springframework.data.domain.PageRequest convertToSpringPageRequest(
