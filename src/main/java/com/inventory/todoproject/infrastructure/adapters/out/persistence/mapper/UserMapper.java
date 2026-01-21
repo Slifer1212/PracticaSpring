@@ -21,7 +21,6 @@ public class UserMapper {
         entity.setRole(user.getRole());
         entity.setEnabled(user.isEnabled());
         entity.setCreatedAt(LocalDateTime.now());
-        entity.setCreatedAt(user.getCreatedAt());
         entity.setPassword(user.getPassword());
 
         return entity;

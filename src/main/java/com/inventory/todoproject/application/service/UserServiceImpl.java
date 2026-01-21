@@ -11,6 +11,8 @@ import com.inventory.todoproject.domain.entities.User;
 import com.inventory.todoproject.domain.enums.Roles;
 import com.inventory.todoproject.domain.exception.InvalidPasswordException;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
+import com.inventory.todoproject.domain.pagination.Page;
+import com.inventory.todoproject.domain.pagination.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -118,6 +120,22 @@ public class UserServiceImpl implements UserUseCase {
         User user = buildUser(request, roles);
         User savedUser = userRepository.save(user);
         return mapToResponse(savedUser);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<UserResponse> getAllUsersPaginated(PageRequest pageRequest) {
+        Page<User> userPage = userRepository.findAll(pageRequest);
+
+        List<UserResponse> responses =  userPage.getContent()
+                .stream().map(this::mapToResponse).toList();
+
+        return new Page<>(
+                responses,
+                userPage.getPageNumber(),
+                userPage.getPageSize(),
+                userPage.getTotalElements()
+        );
     }
 
     private User buildUser(CreateUserRequest request, Roles role){

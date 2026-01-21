@@ -10,6 +10,8 @@ import com.inventory.todoproject.domain.entities.Task;
 import com.inventory.todoproject.domain.enums.TaskState;
 import com.inventory.todoproject.domain.exception.TaskNotFoundException;
 import com.inventory.todoproject.domain.exception.UserNotFoundException;
+import com.inventory.todoproject.domain.pagination.Page;
+import com.inventory.todoproject.domain.pagination.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +49,7 @@ public class TaskServiceImpl implements TaskUseCase {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(taskId));
 
-        if(task.isOwnedBy(userId)){
+        if(!task.isOwnedBy(userId)){
             throw new IllegalArgumentException("Task does not belong to user");
         }
 
@@ -105,6 +107,48 @@ public class TaskServiceImpl implements TaskUseCase {
         return taskRepository.findByUserIdAndState(userId, state).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TaskResponse> getAllTasksByUserPaginated(Long userId, PageRequest pageRequest) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException(userId);
+        }
+
+        Page<Task> taskPage =  taskRepository.findAllByUserId(userId, pageRequest);
+
+        List<TaskResponse> responses = taskPage.getContent()
+                .stream().map(this::mapToResponse)
+                .toList();
+
+        return new Page<>(
+                responses,
+                taskPage.getPageNumber(),
+                taskPage.getPageSize(),
+                taskPage.getTotalElements()
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TaskResponse> getTasksByStatePaginated(TaskState state, Long userId, PageRequest pageRequest) {
+        if (!userRepository.existsById(userId)){
+            throw new UserNotFoundException(userId);
+        }
+
+        Page<Task> taskPage = taskRepository.findByUserIdAndState(userId,state,pageRequest);
+
+        List<TaskResponse> responses = taskPage.getContent()
+                .stream().map(this::mapToResponse)
+                .toList();
+
+        return new Page<>(
+                responses,
+                taskPage.getPageNumber(),
+                taskPage.getPageSize(),
+                taskPage.getTotalElements()
+        );
     }
 
     private TaskResponse mapToResponse(Task task) {

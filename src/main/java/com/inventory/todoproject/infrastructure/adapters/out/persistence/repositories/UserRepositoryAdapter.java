@@ -2,6 +2,8 @@ package com.inventory.todoproject.infrastructure.adapters.out.persistence.reposi
 
 import com.inventory.todoproject.application.ports.out.UserRepositoryPort;
 import com.inventory.todoproject.domain.entities.User;
+import com.inventory.todoproject.domain.pagination.Page;
+import com.inventory.todoproject.domain.pagination.PageRequest;
 import com.inventory.todoproject.infrastructure.adapters.out.persistence.entities.UserEntity;
 import com.inventory.todoproject.infrastructure.adapters.out.persistence.jpa.JpaUserRepository;
 import com.inventory.todoproject.infrastructure.adapters.out.persistence.mapper.UserMapper;
@@ -60,5 +62,10 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     @Override
     public boolean existsById(Long id) {
         return jpaUserRepository.existsById(id);
+    }
+
+    @Override
+    public Page<User> findAll(PageRequest pageRequest) {
+        return null;
     }
 }
