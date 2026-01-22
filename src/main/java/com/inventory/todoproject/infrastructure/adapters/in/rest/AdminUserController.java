@@ -5,6 +5,8 @@ import com.inventory.todoproject.application.dto.request.user.UpdateUserRequest;
 import com.inventory.todoproject.application.dto.response.UserResponse;
 import com.inventory.todoproject.application.ports.in.UserUseCase;
 import com.inventory.todoproject.domain.enums.Roles;
+import com.inventory.todoproject.domain.pagination.Page;
+import com.inventory.todoproject.domain.pagination.PageRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,19 @@ public class AdminUserController {
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         List<UserResponse> users = userUseCase.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<UserResponse>> getAllUsersPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(defaultValue = "ASC") String direction) {
+
+        PageRequest pageRequest = new PageRequest(page, size, sortBy, direction);
+        Page<UserResponse> userPage = userUseCase.getAllUsersPaginated(pageRequest);
+
+        return ResponseEntity.ok(userPage);
     }
 
     @GetMapping("/{id}")

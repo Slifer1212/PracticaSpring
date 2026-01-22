@@ -19,5 +19,4 @@ public interface UserUseCase {
     void changePassword(Long userId, ChangePasswordRequest request);
     UserResponse createUserWithRole(CreateUserRequest request, Roles roles);
     Page<UserResponse> getAllUsersPaginated(PageRequest pageRequest);
-
 }
