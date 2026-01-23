@@ -5,6 +5,8 @@ import com.inventory.todoproject.application.dto.request.task.UpdateTaskRequest;
 import com.inventory.todoproject.application.dto.response.TaskResponse;
 import com.inventory.todoproject.application.ports.in.TaskUseCase;
 import com.inventory.todoproject.domain.enums.TaskState;
+import com.inventory.todoproject.domain.pagination.Page;
+import com.inventory.todoproject.domain.pagination.PageRequest;
 import com.inventory.todoproject.infrastructure.security.jwt.JwtAuthenticationDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -113,6 +115,36 @@ public class TaskController {
 
         return ResponseEntity.ok(tasks);
     }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<TaskResponse>>getAllTaskPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(defaultValue = "ASC") String direction,
+            Authentication authentication)
+    {
+        Long userId = getUserIdFromAuthentication(authentication);
+        PageRequest request = new PageRequest(page, size, sortBy, direction);
+        Page<TaskResponse> taskResponsePage =  taskUseCase.getAllTasksByUserPaginated(userId , request);
+        return ResponseEntity.ok(taskResponsePage);
+    }
+
+    @GetMapping("/by-state/{state}/paginated")
+    public ResponseEntity<Page<TaskResponse>>getAllTaskByStatePaginated(
+            @PathVariable TaskState state,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(defaultValue = "ASC") String direction,
+            Authentication authentication)
+    {
+        Long userId = getUserIdFromAuthentication(authentication);
+        PageRequest request = new PageRequest(page, size, sortBy, direction);
+        Page<TaskResponse> taskResponsePage =  taskUseCase.getTasksByStatePaginated(state, userId , request);
+        return ResponseEntity.ok(taskResponsePage);
+    }
+
 
     private Long getUserIdFromAuthentication(Authentication authentication) {
         if (authentication.getDetails() instanceof JwtAuthenticationDetails) {
